@@ -34,7 +34,7 @@ Systemize.Game = (function() {
    *  entities array is formatted as such: [{layer: 2, entity: entity}, ...]
    */
   Game.prototype.addSceneTemplate = function (template) {
-    this.sceneTemplates = template;
+    this.sceneTemplates.push(template);
   };
 
   Game.prototype.addSystem = function(system) {
@@ -79,26 +79,30 @@ Systemize.Game = (function() {
       self.scenes[scene] = self.scenes[scene]({game: self, id: scene});
 
       //if it's the first scene, set it as the current
-      if(index === 0) {
+      if(index === 0 && self.currentScene === "") {
         self.currentScene = scene;
       }
     });
     //add template scenes
-    this.sceneTemplates.forEach(function(template) {
+    this.sceneTemplates.forEach(function(template, index) {
       var args = {
         id: template.id,
         game: self,
         layerCount: template.layerCount
       };
       var scene = new Systemize.Scene(args);
+      if(index === 0 && self.currentScene === "") {
+        self.currentScene = template.id;
+      }
       template.entities.forEach(function(entity) {
-        scene.addEntity(entity.entity, entity.layer);
+        scene.addEntity(entity.entity(), entity.layer);
       });
       self.scenes[template.id] = scene;
     });
+
   };
 
-  Game.prototype.setCurrentScene = function(sceneId) {
+  Game.prototype.setScene = function(sceneId) {
     this.currentScene = sceneId;
   };
   return Game;
