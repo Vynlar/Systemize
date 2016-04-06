@@ -2,6 +2,14 @@
 A PIXI.js Entity-Component-System Game Engine created by *[Vynlar](https://github.com/Vynlar)*.
 
 ## Getting Started
+First include this in your html file *before* your game logic but after PIXI.js is loaded
+```html
+<script src="lib/Systemize/src/scene.js" charset="utf-8"></script>
+<script src="lib/Systemize/src/entityManager.js" charset="utf-8"></script>
+<script src="lib/Systemize/src/entity.js" charset="utf-8"></script>
+<script src="lib/Systemize/src/inputManager.js" charset="utf-8"></script>
+<script src="lib/Systemize/src/game.js" charset="utf-8"></script>
+```
 Create a new global game object
 ```javascript
 Game = new Systemize.Game(1280, 720); //default: 800x600
@@ -89,8 +97,10 @@ Systems are the place where all game logic should take place. All systems must h
 ```javascript
 var PhysicsSystem =  {
   update: function (delta) {
+    //get all entities with both a "SpriteComponent" and a "PhysicsComponent"
     var entities = Game.entityManager.getEntitiesByComponents(["SpriteComponent", "PhysicsComponent"]);
     entities.forEach(function(entity) {
+      //perform game logic
       var physics = entity.components.PhysicsComponent;
       var sprite = entity.components.SpriteComponent.sprite;
       physics.velocity.x += physics.acceleration.x;
