@@ -1,9 +1,12 @@
-define(["bower_components/pixi/bin/pixi.min.js", "lib/systemize/entityManager.js"], function(PIXI, EntityManager) {
-  var Scene = function(layerCount) {
+window.Systemize = window.Systemize || {};
+Systemize.Scene = (function() {
+  var Scene = function(game, layerCount) {
+    this.game = game;
     this.root = new PIXI.Container();
 
     //layers
     this.layers = [];
+    layerCount = layerCount || 3;
     for(var i = 0; i < layerCount; i++) {
       this.layers[i] = new PIXI.Container();
       this.root.addChild(this.layers[i]);
@@ -15,23 +18,16 @@ define(["bower_components/pixi/bin/pixi.min.js", "lib/systemize/entityManager.js
     }
   };
 
-  /*
-  Entities
-  */
   Scene.prototype.addEntity = function (entity, layer) {
     if(entity.components.SpriteComponent) {
       this.layers[layer].addChild(entity.components.SpriteComponent.sprite);
     }
-    this.entities[layer].push(entity);
-    EntityManager.addEntity(entity);
+    this.entities.push(entity);
+    this.game.entityManager.addEntity(entity);
   };
 
   Scene.prototype.getAllEntities = function () {
-    var result = [];
-    this.entities.forEach(function(array) {
-      result = result.concat(array);
-    });
-    return result;
+    return this.entities;
   };
 
   Scene.prototype.removeEntity = function (entity) {
@@ -39,4 +35,4 @@ define(["bower_components/pixi/bin/pixi.min.js", "lib/systemize/entityManager.js
   };
 
   return Scene;
-});
+})();

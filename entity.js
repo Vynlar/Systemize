@@ -1,4 +1,5 @@
-define(["./entityManager.js"], function(EntityManager) {
+window.Systemize = window.Systemize || {};
+Systemize.Entity = (function() {
   var Entity = function() {
     this.components = {};
   };
@@ -11,10 +12,10 @@ define(["./entityManager.js"], function(EntityManager) {
   Entity.prototype.removeComponent = function(type) {
     this.components.forEach(function(component) {
       if(component instanceof type) {
-        throw new Error("removeComponent is not yet implimented")
+        throw new Error("removeComponent is not yet implimented");
       }
     });
   };
 
   return Entity;
-});
+})();

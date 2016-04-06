@@ -1,16 +1,17 @@
-define([], function() {
+window.Systemize = window.Systemize || {};
+Systemize.EntityManager = (function() {
   //Entity Manager Class
-  var EntityManager = {
-    entities: [],
-    lastTime: new Date().getTime(),
-    systems: []
+  var EntityManager = function() {
+    this.entities = [];
+    this.lastTime = new Date().getTime();
+    this.systems = [];
   };
 
-  EntityManager.addEntity = function (entity) {
+  EntityManager.prototype.addEntity = function (entity) {
     this.entities.push(entity);
   };
 
-  EntityManager.getEntitiesByComponents = function(components) {
+  EntityManager.prototype.getEntitiesByComponents = function(components) {
     if(this.entities === undefined) {
       return;
     }
@@ -28,7 +29,7 @@ define([], function() {
     return entities;
   };
 
-  EntityManager.update = function () {
+  EntityManager.prototype.update = function () {
       var newTime = new Date().getTime();
       this.systems.forEach(function(system) {
         system.update(newTime - this.lastTime);
@@ -36,9 +37,9 @@ define([], function() {
       this.lastTime = newTime;
   };
 
-  EntityManager.addSystem = function(system) {
+  EntityManager.prototype.addSystem = function(system) {
     this.systems.push(system);
   };
 
   return EntityManager;
-});
+})();

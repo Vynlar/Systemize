@@ -1,46 +1,72 @@
 # Systemize
-A PIXI.js Entity-Component-System Library created by *[Vynlar](https://github.com/Vynlar)*.
+A PIXI.js Entity-Component-System Game Engine created by *[Vynlar](https://github.com/Vynlar)*.
 
-## Basic Usage
+## Getting Started
+1. Create a new global game object
 ```javascript
-//define the width and height of the window
-SceneManager.create(800, 600);
-//define assets to load
-SceneManager.addAssets([
-  ["pickle", "assets/pickle.png"], //[name, file_path]
-  ["background", "assets/background.png"]
+Game = new Systemize.Game(1280, 720); //default: 800x600
+```
+2. Add assets to the game
+```javascript
+Game.addAssets([
+    ["pickle", "assets/pickle.png"], // Format: [id, path]
+    ["background", "assets/background.png"]
 ]);
-//add a scene + name it
-SceneManager.addScene("GameScene", GameScene); // Scene creation detailed below
-//add systems
-SceneManager.addSystem(new PhysicsSystem(this)); // System creation detailed below
-SceneManager.addSystem(new CollisionSystem(this));
-//start the game
-SceneManager.start();
+```
+3. Add scenes (more on scene creation below)
+```javascript
+Game.addScene("GameScene", GameScene);
+```
+4. Add systems (more on system creation below)
+```javascript
+Game.addSystem(new PhysicsSystem());
+Game.addSystem(new CollisionSystem());
+```
+5. Start the game!
+```javascript
+Game.start();
 ```
 
 ## Scenes
+Scenes are just functions that return a modified ```Systemize.Scene``` object. To create a scene follow these steps:
+1. First create a function and then initialize an empty scene
 ```javascript
-var GameScene = function() { // name your scene whatever you want
-  var scene = new BaseScene(3);
-  //background
-  var background = new Entity(); //create an entity
-  var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture); // Create a standard PIXI sprite
-                                                                          // The background here is the name you put when loading assets
-  background.addComponent("SpriteComponent", {sprite: sprite}); // Add component
-                                                                // SpriteComponent is a special component that any drawable entity must include  
-  scene.addEntity(background, 0); // Add entity to the scene
-                                  // First argument: entity, second argument: layer number to put it on
-
+var GameScene = function(game) { // name your scene whatever you want
+    var scene = new Systemize.Scene(game, 3);
+```
+2. Next create entities and add components to them
+```javascript
+    var background = new Systemize.Entity();
+    var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
+    background.addComponent("SpriteComponent", {sprite: sprite});
+    scene.addEntity(background, 0);
+```
+3. Then return the created scene
+```javascript
   return scene;
 };
-return GameScene; //make sure that this is the same name as above
+return GameScene;
+```
+
+All in all:
+```javascript
+var GameScene = function(game) { // name your scene whatever you want
+    var scene = new Systemize.Scene(game, 3);
+    var background = new Systemize.Entity(); //create an entity
+    var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture); // Create a standard PIXI sprite
+                                                                            // The background here is the name you put when loading assets
+    background.addComponent("SpriteComponent", {sprite: sprite}); // Add component
+                                                                  // SpriteComponent is a special component that any drawable entity must include  
+    scene.addEntity(background, 0); // Add entity to the scene
+                                    // First argument: entity, second argument: layer number to put it on
+  return scene;
+};
 ```
 
 ## Entities & Components
 Entities are created simply:
 ```javascript
-var dragon = new Entity();
+var dragon = new Systemize.Entity();
 ```
 Components are normal javascript objects
 They *SHOULD NOT* contain methods! Game logic should strictly be done in systems.
@@ -56,29 +82,22 @@ dragon.addComponent("FlyingComponent", FlyingComponent);
 ```
 
 ## Systems
+Systems are the place where all game logic should take place. All systems must have an update function on them. This update function can use the EntityManager to get all the entities with a certain set of components. For example, the system below takes all entities with both a SpriteComponent and a PhysicsComponent.
 ```javascript
-//example system
-var PhysicsSystem = function() {
-  //initialization logic goes here if you have any
+var PhysicsSystem =  {
+  update: function (delta) {
+    var entities = Game.entityManager.getEntitiesByComponents(["SpriteComponent", "PhysicsComponent"]);
+    entities.forEach(function(entity) {
+      var physics = entity.components.PhysicsComponent;
+      var sprite = entity.components.SpriteComponent.sprite;
+      physics.velocity.x += physics.acceleration.x;
+      physics.velocity.y += physics.acceleration.y;
+      sprite.position.x += physics.velocity.x;
+      sprite.position.y += physics.velocity.y;
+    });
+  }
 };
-
-//called every frame
-PhysicsSystem.prototype.update = function (delta) {
-  //gets all entities that have BOTH a 'SpriteComponent' AND a 'PhysicsComponent'
-  var entities = EntityManager.getEntitiesByComponents(["SpriteComponent", "PhysicsComponent"]);
-  //loop though the entities and perform game logic
-  entities.forEach(function(entity) {
-    var physics = entity.components.PhysicsComponent;
-    var sprite = entity.components.SpriteComponent.sprite;
-    physics.velocity.x += physics.acceleration.x;
-    physics.velocity.y += physics.acceleration.y;
-    sprite.position.x += physics.velocity.x;
-    sprite.position.y += physics.velocity.y;
-  });
-};
-
-return PhysicsSystem;
 ```
 
 ## Contribution
-Pull requests are welcome! Any issues should be submitted here on GitHub. I will likely not be adding features, but I will try my best to fix bugs in the system as I find them.
+Pull requests are welcome! Any issues should be submitted here on GitHub under the issues tab. I will likely not be adding features, but I will try my best to fix bugs in the system as I find them.
