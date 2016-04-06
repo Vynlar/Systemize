@@ -26,6 +26,16 @@ Systemize.Game = (function() {
     this.scenes[name] = scene;
   };
 
+  /*
+   *  template is an object with: layerCount, an id, and an entities array
+   *  layerCount is an integer of how many layers the scene should have
+   *  id is a unique string
+   *  entities array is formatted as such: [{layer: 2, entity: entity}, ...]
+   */
+  Game.prototype.addSceneTemplate = function (template) {
+    this.sceneTemplates = template;
+  };
+
   Game.prototype.addSystem = function(system) {
     this.entityManager.addSystem(system);
   };
@@ -71,6 +81,19 @@ Systemize.Game = (function() {
       if(index === 0) {
         self.currentScene = scene;
       }
+    });
+    //add template scenes
+    this.sceneTemplates.forEach(function(template) {
+      var args = {
+        id: template.id,
+        game: self,
+        layerCount: template.layerCount
+      };
+      var scene = new Systemize.Scene(args);
+      template.entities.forEach(function(entity) {
+        scene.addEntity(entity.entity, entity.layer);
+      });
+      self.scenes[template.id] = scene;
     });
   };
 

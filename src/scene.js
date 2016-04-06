@@ -28,8 +28,14 @@ Systemize.Scene = (function() {
     this.game.entityManager.addEntity(entity, this.id);
   };
 
-  Scene.prototype.getAllEntities = function () {
-    return this.entities;
+  Scene.prototype.getAllEntities = function (layer) {
+    if(!layer)
+      return this.entities.reduce(function(result, layer) {
+        result = result.concat(layer);
+      }, []);
+    else {
+      return this.entities[layer];
+    }
   };
 
   Scene.prototype.removeEntity = function (entity) {

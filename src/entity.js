@@ -10,11 +10,7 @@ Systemize.Entity = (function() {
   };
 
   Entity.prototype.removeComponent = function(type) {
-    this.components.forEach(function(component) {
-      if(component instanceof type) {
-        throw new Error("removeComponent is not yet implimented");
-      }
-    });
+    delete this.components[type];
   };
 
   return Entity;
