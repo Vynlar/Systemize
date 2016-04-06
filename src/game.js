@@ -12,6 +12,7 @@ Systemize.Game = (function() {
 
     //scenes
     this.scenes = {};
+    this.sceneTemplates = [];
     this.currentScene = "";
 
     //use nearest neighbor scaling
