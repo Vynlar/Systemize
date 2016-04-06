@@ -30,23 +30,23 @@ Game.start();
 ## Scenes
 Scenes are just functions that return a modified ```Systemize.Scene``` object. To create a scene follow these steps:
 1. First create a function and then initialize an empty scene
-```javascript
-var GameScene = function(game) { // name your scene whatever you want
-    var scene = new Systemize.Scene(game, 3);
-```
+        ```javascript
+        var GameScene = function(game) { // name your scene whatever you want
+          var scene = new Systemize.Scene(game, 3);
+        ```
 2. Next create entities and add components to them
-```javascript
-    var background = new Systemize.Entity();
-    var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
-    background.addComponent("SpriteComponent", {sprite: sprite});
-    scene.addEntity(background, 0);
-```
-3. Then return the created scene
-```javascript
-  return scene;
-};
-return GameScene;
-```
+        ```javascript
+            var background = new Systemize.Entity();
+            var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
+            background.addComponent("SpriteComponent", {sprite: sprite});
+            scene.addEntity(background, 0);
+        ```
+        3. Then return the created scene
+        ```javascript
+          return scene;
+        };
+        return GameScene;
+        ```
 
 All in all:
 ```javascript
@@ -56,9 +56,9 @@ var GameScene = function(game) { // name your scene whatever you want
     var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture); // Create a standard PIXI sprite
                                                                             // The background here is the name you put when loading assets
     background.addComponent("SpriteComponent", {sprite: sprite}); // Add component
-                                                                  // SpriteComponent is a special component that any drawable entity must include  
+                                                          // SpriteComponent is a special component that any drawable entity must include  
     scene.addEntity(background, 0); // Add entity to the scene
-                                    // First argument: entity, second argument: layer number to put it on
+                            // First argument: entity, second argument: layer number to put it on
   return scene;
 };
 ```
