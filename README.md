@@ -1,5 +1,5 @@
 # Systemize
-A PIXI.js Entity-Component-System Library
+A PIXI.js Entity-Component-System Library created by *[Vynlar](https://github.com/Vynlar)*.
 
 ## Basic Usage
 ```javascript
@@ -79,3 +79,6 @@ PhysicsSystem.prototype.update = function (delta) {
 
 return PhysicsSystem;
 ```
+
+## Contribution
+Pull requests are welcome! Any issues should be submitted here on GitHub. I will likely not be adding features, but I will try my best to fix bugs in the system as I find them.
