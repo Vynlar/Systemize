@@ -1,12 +1,14 @@
 window.Systemize = window.Systemize || {};
 Systemize.Scene = (function() {
-  var Scene = function(game, layerCount) {
-    this.game = game;
+  var Scene = function(args) {
+    this.id = args.id;
+    this.game = args.game;
     this.root = new PIXI.Container();
+
 
     //layers
     this.layers = [];
-    layerCount = layerCount || 3;
+    var layerCount = args.layerCount || 3;
     for(var i = 0; i < layerCount; i++) {
       this.layers[i] = new PIXI.Container();
       this.root.addChild(this.layers[i]);
@@ -23,7 +25,7 @@ Systemize.Scene = (function() {
       this.layers[layer].addChild(entity.components.SpriteComponent.sprite);
     }
     this.entities.push(entity);
-    this.game.entityManager.addEntity(entity);
+    this.game.entityManager.addEntity(entity, this.id);
   };
 
   Scene.prototype.getAllEntities = function () {

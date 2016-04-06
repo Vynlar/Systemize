@@ -19,8 +19,8 @@ Game.addScene("GameScene", GameScene);
 ```
 Add systems (more on system creation below)
 ```javascript
-Game.addSystem(new PhysicsSystem());
-Game.addSystem(new CollisionSystem());
+Game.addSystem(PhysicsSystem);
+Game.addSystem(CollisionSystem);
 ```
 Start the game!
 ```javascript
@@ -31,8 +31,9 @@ Game.start();
 Scenes are just functions that return a modified ```Systemize.Scene``` object. To create a scene follow these steps:
 First create a function and then initialize an empty scene
 ```javascript
-var GameScene = function(game) { // name your scene whatever you want
-  var scene = new Systemize.Scene(game, 3);
+var GameScene = function(args) { // name your scene whatever you want
+  args.layerCount = 3;
+  var scene = new Systemize.Scene(args);
 ```
 Next create entities and add components to them
 ```javascript
@@ -50,8 +51,10 @@ return GameScene;
 
 All in all:
 ```javascript
-var GameScene = function(game) { // name your scene whatever you want
-    var scene = new Systemize.Scene(game, 3);
+var GameScene = function(args) { // name your scene whatever you want
+    args.layerCount = 3;
+    var scene = new Systemize.Scene(args);
+
     var background = new Systemize.Entity(); //create an entity
     var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture); // Create a standard PIXI sprite
                                                                             // The background here is the name you put when loading assets

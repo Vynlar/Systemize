@@ -1,7 +1,7 @@
 window.Systemize = window.Systemize || {};
 Systemize.Game = (function() {
   var Game = function(width, height) {
-    this.entityManager = new Systemize.EntityManager();
+    this.entityManager = new Systemize.EntityManager(this);
     //create renderer
     width = width || 800;
     height = height || 600;
@@ -65,7 +65,7 @@ Systemize.Game = (function() {
     var self = this;
     //construct and store each scene
     Object.keys(this.scenes).forEach(function(scene, index) {
-      self.scenes[scene] = self.scenes[scene](self);
+      self.scenes[scene] = self.scenes[scene]({game: self, id: scene});
 
       //if it's the first scene, set it as the current
       if(index === 0) {
@@ -74,8 +74,8 @@ Systemize.Game = (function() {
     });
   };
 
-  Game.prototype.setCurrentScene = function(scene) {
-    this.currentScene = scene;
+  Game.prototype.setCurrentScene = function(sceneId) {
+    this.currentScene = sceneId;
   };
   return Game;
 })();
