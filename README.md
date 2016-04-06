@@ -2,7 +2,7 @@
 A PIXI.js Entity-Component-System Game Engine created by *[Vynlar](https://github.com/Vynlar)*.
 
 ## Getting Started
-First include this in your html file *before* your game logic but after PIXI.js is loaded
+First include this in your html file *before* your game logic but after PIXI.js is loaded. Either place the library inside lib/Systemize *or* change the path in these script tags.
 ```html
 <script src="lib/Systemize/src/scene.js" charset="utf-8"></script>
 <script src="lib/Systemize/src/entityManager.js" charset="utf-8"></script>
