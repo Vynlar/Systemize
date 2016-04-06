@@ -1,4 +1,4 @@
-define(function() {
+define([], function() {
   //Entity Manager Class
   var EntityManager = {
     entities: [],
@@ -28,12 +28,16 @@ define(function() {
     return entities;
   };
 
-  EntityManager.prototype.update = function () {
+  EntityManager.update = function () {
       var newTime = new Date().getTime();
       this.systems.forEach(function(system) {
-        system.update(newTime - lastTime);
+        system.update(newTime - this.lastTime);
       });
       this.lastTime = newTime;
+  };
+
+  EntityManager.addSystem = function(system) {
+    this.systems.push(system);
   };
 
   return EntityManager;

@@ -1,6 +1,6 @@
 define([
         "bower_components/pixi/bin/pixi.min.js",
-        "./entityManager.js",
+        "./entityManager.js"
   ], function(PIXI, EntityManager) {
   //create renderer
   var renderer = PIXI.autoDetectRenderer(1280, 720);
@@ -31,9 +31,10 @@ define([
     gameLoop: function() {
       requestAnimationFrame(this.gameLoop.bind(this));
 
+      //update entities
       EntityManager.update();
 
-      //render
+      //render the current scene
       renderer.render(scenes[currentScene].root);
     },
     start: function() {
@@ -57,16 +58,18 @@ define([
       PIXI.loader.load();
     },
     setup: function() {
-      this.setupScenes();
-    },
-    setupScenes: function() {
+      //construct and store each scene
       Object.keys(scenes).forEach(function(scene, index) {
         scenes[scene] = scenes[scene]();
 
+        //if it's the first scene, set it as the current
         if(index === 0) {
           currentScene = scene;
         }
       });
+    },
+    setCurrentScene: function(scene) {
+      currentScene = scene;
     }
   };
 });
