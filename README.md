@@ -2,51 +2,51 @@
 A PIXI.js Entity-Component-System Game Engine created by *[Vynlar](https://github.com/Vynlar)*.
 
 ## Getting Started
-1. Create a new global game object
+Create a new global game object
 ```javascript
 Game = new Systemize.Game(1280, 720); //default: 800x600
 ```
-2. Add assets to the game
+Add assets to the game
 ```javascript
 Game.addAssets([
     ["pickle", "assets/pickle.png"], // Format: [id, path]
     ["background", "assets/background.png"]
 ]);
 ```
-3. Add scenes (more on scene creation below)
+Add scenes (more on scene creation below)
 ```javascript
 Game.addScene("GameScene", GameScene);
 ```
-4. Add systems (more on system creation below)
+Add systems (more on system creation below)
 ```javascript
 Game.addSystem(new PhysicsSystem());
 Game.addSystem(new CollisionSystem());
 ```
-5. Start the game!
+Start the game!
 ```javascript
 Game.start();
 ```
 
 ## Scenes
 Scenes are just functions that return a modified ```Systemize.Scene``` object. To create a scene follow these steps:
-1. First create a function and then initialize an empty scene
-        ```javascript
-        var GameScene = function(game) { // name your scene whatever you want
-          var scene = new Systemize.Scene(game, 3);
-        ```
-2. Next create entities and add components to them
-        ```javascript
-            var background = new Systemize.Entity();
-            var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
-            background.addComponent("SpriteComponent", {sprite: sprite});
-            scene.addEntity(background, 0);
-        ```
-        3. Then return the created scene
-        ```javascript
-          return scene;
-        };
-        return GameScene;
-        ```
+First create a function and then initialize an empty scene
+```javascript
+var GameScene = function(game) { // name your scene whatever you want
+  var scene = new Systemize.Scene(game, 3);
+```
+Next create entities and add components to them
+```javascript
+    var background = new Systemize.Entity();
+    var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
+    background.addComponent("SpriteComponent", {sprite: sprite});
+    scene.addEntity(background, 0);
+```
+Then return the created scene
+```javascript
+  return scene;
+};
+return GameScene;
+```
 
 All in all:
 ```javascript
