@@ -45,7 +45,32 @@ Game.start();
 ```
 
 ## Scenes
-Scenes are just functions that return a modified ```Systemize.Scene``` object. To create a scene follow these steps:
+### Method 1 (Easier)
+There are two ways of creating a scene. The easiest way will be outlined first.
+Create a scene using a template
+```javascript
+Game.addSceneTemplate({
+  id: "GameScene", //required and must be unique
+  layerCount: 4, //default: 3
+  entites: [
+    //example entity
+    {
+      layer: 0, //the layer to put the entity on
+      entity: function() {
+        //create an entity
+        var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
+        var background = new Systemize.Entity([
+          {type: "SpriteComponent", component: {sprite: sprite}}
+        ]);
+        //return the entity
+        return background;
+      }
+    }
+  ]
+});
+```
+### Method 2
+You can create a scene manually as well. Essentially just create a ```Systemize.Scene``` object, add entities to it, and then return it. *Remember the scene is a function, not the actual scene object*
 First create a function and then initialize an empty scene
 ```javascript
 var GameScene = function(args) { // name your scene whatever you want
@@ -57,16 +82,14 @@ Next create entities and add components to them
     var background = new Systemize.Entity();
     var sprite = new PIXI.Sprite(PIXI.loader.resources.background.texture);
     background.addComponent("SpriteComponent", {sprite: sprite});
-    scene.addEntity(background, 0);
+    scene.addEntity(background, 0); //be sure to remember to add them to the scene
 ```
 Then return the created scene
 ```javascript
   return scene;
 };
-return GameScene;
 ```
-
-All in all:
+The above example all together + comments
 ```javascript
 var GameScene = function(args) { // name your scene whatever you want
     args.layerCount = 3;
@@ -84,6 +107,15 @@ var GameScene = function(args) { // name your scene whatever you want
 ```
 
 ## Entities & Components
+### Method 3
+You can pass in an array of components to the entity constructor
+```javascript
+var dragon = new Systemize.Entity([
+  {type: "FlyingComponent", component: {speed: 34, maxHeight: 200}}
+]);
+```
+
+### Method 2 (Manual way)
 Entities are created simply:
 ```javascript
 var dragon = new Systemize.Entity();
@@ -104,7 +136,7 @@ dragon.addComponent("FlyingComponent", FlyingComponent);
 ## Systems
 Systems are the place where all game logic should take place. All systems must have an update function on them. This update function can use the EntityManager to get all the entities with a certain set of components. For example, the system below takes all entities with both a SpriteComponent and a PhysicsComponent.
 ```javascript
-var PhysicsSystem =  {
+var PhysicsSystem = {
   update: function (delta) {
     //get all entities with both a "SpriteComponent" and a "PhysicsComponent"
     var entities = Game.entityManager.getEntitiesByComponents(["SpriteComponent", "PhysicsComponent"]);

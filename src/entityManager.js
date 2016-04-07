@@ -36,8 +36,9 @@ Systemize.EntityManager = (function() {
 
   EntityManager.prototype.update = function () {
       var newTime = new Date().getTime();
+      var delta = newTime - this.lastTime;
       this.systems.forEach(function(system) {
-        system.update(newTime - this.lastTime);
+        system.update(delta);
       });
       this.lastTime = newTime;
   };
