@@ -107,7 +107,7 @@ var GameScene = function(args) { // name your scene whatever you want
 ```
 
 ## Entities & Components
-### Method 3
+### Method 1
 You can pass in an array of components to the entity constructor
 ```javascript
 var dragon = new Systemize.Entity([
