@@ -95,7 +95,15 @@ Systemize.Game = (function() {
         self.currentScene = template.id;
       }
       template.entities.forEach(function(entity) {
-        scene.addEntity(entity.entity(), entity.layer);
+        //might be a single entity
+        var entities = entity.entity();
+        if(!Array.isArray(entities)) {
+          scene.addEntity(entities, entity.layer);
+        } else {
+          entities.forEach(function(e) {
+            scene.addEntity(e, entity.layer);
+          });
+        }
       });
       self.scenes[template.id] = scene;
     });
