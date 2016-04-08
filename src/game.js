@@ -27,6 +27,10 @@ Systemize.Game = (function() {
     this.scenes[name] = scene;
   };
 
+  Game.prototype.getScene = function (id) {
+    return this.scenes[id];
+  };
+
   /*
    *  template is an object with: layerCount, an id, and an entities array
    *  layerCount is an integer of how many layers the scene should have

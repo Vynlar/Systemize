@@ -5,7 +5,6 @@ Systemize.Scene = (function() {
     this.game = args.game;
     this.root = new PIXI.Container();
 
-
     //layers
     this.layers = [];
     var layerCount = args.layerCount || 3;
@@ -21,6 +20,7 @@ Systemize.Scene = (function() {
   };
 
   Scene.prototype.addEntity = function (entity, layer) {
+    entity.scene = entity.scene || this;
     if(entity.components.SpriteComponent) {
       this.layers[layer].addChild(entity.components.SpriteComponent.sprite);
     }
@@ -28,7 +28,7 @@ Systemize.Scene = (function() {
     this.game.entityManager.addEntity(entity, this.id);
   };
 
-  Scene.prototype.getAllEntities = function (layer) {
+  Scene.prototype.getEntities = function (layer) {
     if(!layer)
       return this.entities.reduce(function(result, layer) {
         result = result.concat(layer);
