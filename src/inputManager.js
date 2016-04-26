@@ -1,6 +1,7 @@
 window.Systemize = window.Systemize || {};
 Systemize.InputManager = (function() {
   var pressed = {};
+  var keys = {};
 
   document.body.addEventListener("keydown", function(event) {
     pressed[event.keyCode] = true;
@@ -11,10 +12,16 @@ Systemize.InputManager = (function() {
 
   return {
     isKeyDown: function(key) {
+      if(typeof key === "string") {
+        key = keys[key];
+      }
       if(pressed[key]) {
         return true;
       }
       return false;
+    },
+    addKey: function(name, code) {
+      keys[name] = code;
     }
   };
 })();
