@@ -38,8 +38,12 @@ Systemize.Scene = (function() {
     }
   };
 
-  Scene.prototype.removeEntity = function (entity) {
+  Scene.prototype.removeEntity = function (entity, layer) {
     this.entities.splice(this.entities.indexOf(entity), 1);
+    this.game.entityManager.removeEntity(entity, this.id);
+    if(entity.components && entity.components.SpriteComponent) {
+      this.layers[layer].removeChild(entity.components.SpriteComponent.sprite);
+    }
   };
 
   return Scene;

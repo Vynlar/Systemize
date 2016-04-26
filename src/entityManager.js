@@ -34,6 +34,10 @@ Systemize.EntityManager = (function() {
     return entities;
   };
 
+  EntityManager.prototype.removeEntity = function(entity, sceneId) {
+    this.entities[sceneId].splice(this.entities[sceneId].indexOf(entity), 1);
+  };
+
   EntityManager.prototype.update = function () {
       var newTime = new Date().getTime();
       var delta = newTime - this.lastTime;
