@@ -12,6 +12,7 @@ Systemize.Game = (function() {
 
     //scenes
     this.scenes = {};
+    this.sceneConstructors = {};
     this.sceneTemplates = [];
     this.currentScene = "";
 
@@ -24,7 +25,7 @@ Systemize.Game = (function() {
   };
 
   Game.prototype.addScene = function(name, scene) {
-    this.scenes[name] = scene;
+    this.sceneConstructors[name] = scene;
   };
 
   Game.prototype.getScene = function (id) {
@@ -76,11 +77,16 @@ Systemize.Game = (function() {
     PIXI.loader.load();
   };
 
+  Game.prototype.reloadScene = function (sceneId) {
+    this.entityManager.clearScene(sceneId);
+    this.scenes[sceneId] = this.sceneConstructors[sceneId]({game: this, id: sceneId});
+  };
+
   Game.prototype.setup = function() {
     var self = this;
     //construct and store each scene
-    Object.keys(this.scenes).forEach(function(scene, index) {
-      self.scenes[scene] = self.scenes[scene]({game: self, id: scene});
+    Object.keys(this.sceneConstructors).forEach(function(scene, index) {
+      self.scenes[scene] = self.sceneConstructors[scene]({game: self, id: scene});
 
       //if it's the first scene, set it as the current
       if(index === 0 && self.currentScene === "") {

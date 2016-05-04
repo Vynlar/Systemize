@@ -16,6 +16,10 @@ Systemize.EntityManager = (function() {
     this.entities[sceneId].push(entity);
   };
 
+  EntityManager.prototype.clearScene = function (sceneId) {
+    this.entities[sceneId] = [];
+  };
+
   EntityManager.prototype.getEntitiesByComponents = function(components) {
     var sceneId = this.game.currentScene;
     this.entities[sceneId] = this.entities[sceneId] || [];
